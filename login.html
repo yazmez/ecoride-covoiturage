@@ -3,23 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - Ecoride</title>
+    <title>Connexion - EcoRide</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8f0;
+            background-image: url(https://media.gettyimages.com/id/1771118509/fr/photo/electric-car-charging-at-the-electric-station-on-the-street.jpg?s=2048x2048&w=gi&k=20&c=tdkVvchnrWldjViszRTD4pXBc7jBU82vGD2dLYtIIz0=);
+        }
+        nav {
+            background: #1f6b4e;
+            padding: 15px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+        .login-form {
+            background: #2e8b57;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            max-width: 400px;
+        }
+        .login-form input {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .login-form button {
+            padding: 10px 20px;
+            background: #1f6b4e;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .register-link {
+            text-align: center;
+            margin: 20px;
+        }
+    </style>
 </head>
 <body>
-    <nav style="background:rgb(47, 159, 47); padding: 20px; text-align: center;">
-        <a href="index.html" style="color: white; margin: 0 15px; text-decoration: none;">🏠 Accueil</a>
-        <a href="covoiturages.html" style="color: white; margin: 0 15px; text-decoration: none;">🚗 Covoiturages</a>
-        <a href="login.html" style="color: white; margin: 0 15px; text-decoration: none;">🔐 Connexion</a>
-        <a href="contact.html" style="color: white; margin: 0 15px; text-decoration: none;">📞 Contact</a>
+    <nav>
+        <a href="index.html">🏠 Accueil</a>
+        <a href="covoiturages.html">🚗 Covoiturages</a>
+        <a href="login.html">🔐 Connexion</a>
+        <a href="contact.html">📞 Contact</a>
     </nav>
-    <h1>Page de Connexion</h1>
-    <form style="background: rgb(44, 160, 38); padding: 20px; margin: 20px; border-radius: 8px; max-width: 400px;">
+
+    <h1>Connexion à EcoRide</h1>
+    
+    <form class="login-form">
+        <h2>Se Connecter</h2>
         <label for="username">Nom d'utilisateur:</label><br>
-        <input type="text" id="username" name="username" style="width: 100%; padding: 8px; margin: 10px 0;"><br>
+        <input type="text" id="username" name="username"><br>
+        
         <label for="password">Mot de passe:</label><br>
-        <input type="password" id="password" name="password" style="width: 100%; padding: 8px; margin: 10px 0;"><br>
-        <button type="submit" style="padding: 10px 20px; background: #2e8b57; color: white; border: none; border-radius: 4px;">Se connecter</button>
+        <input type="password" id="password" name="password"><br>
+        
+        <button type="submit">Se connecter</button>
     </form>
-    <p> pas de compte? <a href="register.html">Créer un compte</a></p>
+
+    <div class="register-link">
+        <p>Pas de compte? <a href="register.html">Créer un compte</a></p>
+    </div>
 </body>
 </html>

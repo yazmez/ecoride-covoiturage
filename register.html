@@ -4,39 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créer un compte - EcoRide</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8f0;
+            background-image: url(https://media.istockphoto.com/id/1662932717/fr/photo/charge-de-voiture-%C3%A9lectrique.jpg?s=1024x1024&w=is&k=20&c=kGQ-HCfmNx79wb7zQ-AD4ylSeIg31VYkQTrDeJNSLBs=);
+        background-repeat: no-repeat;
+        background-size: cover;
+        }
+        nav {
+            background: #1f6b4e;
+            padding: 15px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+        .register-form {
+            background: #2e8b57;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            max-width: 400px;
+        }
+        .register-form input {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .register-form button {
+            padding: 10px 20px;
+            background: #1f6b4e;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .credits-message {
+            text-align: center;
+            margin: 20px;
+            font-weight: bold;
+        }
+        .login-link {
+            text-align: center;
+            margin: 20px;
+        }
+        small {
+            font-size: 0.8em;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-    <nav style="background:rgb(47, 159, 47); padding: 20px; text-align: center;">
-        <a href="index.html" style="color: white; margin: 0 15px; text-decoration: none;">🏠 Accueil</a>
-        <a href="covoiturages.html" style="color: white; margin: 0 15px; text-decoration: none;">🚗 Covoiturages</a>
-        <a href="login.html" style="color: white; margin: 0 15px; text-decoration: none;">🔐 Connexion</a>
-        <a href="contact.html" style="color: white; margin: 0 15px; text-decoration: none;">📞 Contact</a>
+    <nav>
+        <a href="index.html">🏠 Accueil</a>
+        <a href="covoiturages.html">🚗 Covoiturages</a>
+        <a href="login.html">🔐 Connexion</a>
+        <a href="contact.html">📞 Contact</a>
     </nav>
 
     <h1>Créer un compte EcoRide</h1>
     
-    <form style="background: rgb(44, 160, 38); padding: 20px; margin: 20px; border-radius: 8px; max-width: 400px;">
+    <form class="register-form">
         <h2>Inscription</h2>
         
         <label for="pseudo">Pseudo:</label><br>
-        <input type="text" id="pseudo" name="pseudo" style="width: 100%; padding: 8px; margin: 10px 0;"><br>
+        <input type="text" id="pseudo" name="pseudo"><br>
         
         <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" style="width: 100%; padding: 8px; margin: 10px 0;"><br>
+        <input type="email" id="email" name="email"><br>
         
         <label for="password">Mot de passe sécurisé:</label><br>
-        <input type="password" id="password" name="password" style="width: 100%; padding: 8px; margin: 10px 0;">
+        <input type="password" id="password" name="password">
         <small>Minimum 8 caractères, avec chiffres et lettres</small><br>
         
         <label for="confirm-password">Confirmer le mot de passe:</label><br>
-        <input type="password" id="confirm-password" name="confirm-password" style="width: 100%; padding: 8px; margin: 10px 0;"><br>
+        <input type="password" id="confirm-password" name="confirm-password"><br>
         
-        <button type="submit" style="padding: 10px 20px; background: #2e8b57; color: white; border: none; border-radius: 4px; margin-top: 10px;">Créer mon compte</button>
+        <button type="submit">Créer mon compte</button>
     </form>
     
-    <p style="text-align: center;">À la création du compte, vous bénéficierez de <strong>20 crédits</strong> offerts!</p>
+    <div class="credits-message">
+        <p>À la création du compte, vous bénéficierez de <strong>20 crédits</strong> offerts!</p>
+    </div>
     
-    <p style="text-align: center;">Déjà un compte? <a href="login.html">Se connecter</a></p>
-
+    <div class="login-link">
+        <p>Déjà un compte? <a href="login.html">Se connecter</a></p>
+    </div>
 </body>
 </html>
