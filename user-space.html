@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Utilisateur - EcoRide</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8f0;
+        }
+        nav {
+            background: #1f6b4e;
+            padding: 15px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+        .user-section {
+            background: white;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .vehicle-form input, .vehicle-form select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .vehicle-form button, .preferences button {
+            padding: 10px 20px;
+            background: #2e8b57;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: #2e8b57;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+        .credits-badge {
+            background: gold;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+      <a href="index.html">🏠 Accueil</a>
+        <a href="covoiturages.html">🚗 Covoiturages</a>
+        <a href="login.html">🔐 Connexion</a>
+        <a href="contact.html">📞 Contact</a>
+        <a href="user-space.html">👤 Mon Espace</a>
+    </nav>
+
+    <div class="user-section">
+        <div class="profile-info">
+            <div class="profile-avatar">👤</div>
+            <div>
+                <h1>Espace de Yazid M.</h1>
+                <p><span class="credits-badge">20 crédits disponibles</span></p>
+                <p>Membre depuis: Décembre 2024</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="user-section">
+    <h2>🚗 Mes Véhicules</h2>
+    <p><em>Aucun véhicule enregistré</em></p>
+    
+    <h3>Ajouter un véhicule</h3>
+    <form class="vehicle-form">
+        <label>Plaque d'immatriculation:</label>
+        <input type="text" value="CZ-536-ET">
+        
+        <label>Date de première immatriculation:</label>
+        <input type="date" value="2020-11-20">
+        
+        <label>Marque du véhicule:</label>
+        <input type="text" value="BMW">
+        
+        <label>Modèle:</label>
+        <input type="text" value="118d">
+        
+        <label>Couleur:</label>
+        <input type="text" value="Bleu">
+        
+        <label>Nombre de places:</label>
+        <input type="number" value="5" min="2" max="9">
+        
+        <label>Énergie utilisée:</label>
+        <select>
+            <option value="">Choisir...</option>
+            <option>Électrique</option>
+            <option>Essence</option>
+            <option selected>Diesel</option>
+            <option>Hybride</option>
+        </select>
+        
+        <button type="submit">✅ Enregistrer le véhicule</button>
+    </form>
+    <div class="user-section">
+        <h2>⚙️ Mes Préférences</h2>
+        <div class="preferences">
+            <p><input type="checkbox"> ✅ Accepte les fumeurs</p>
+            <p><input type="checkbox"> ✅ Accepte les animaux</p>
+            <p><input type="checkbox"> 🔇 Préfère le silence</p>
+            <p><input type="checkbox"> 💬 Aime discuter</p>
+            <p><input type="checkbox"> 🎵 Musique autorisée</p>
+            <p><input type="checkbox"> 🍿 Collations autorisées</p>
+            <button>💾 Enregistrer les préférences</button>
+        </div>
+    </div>
+
+    <div class="user-section">
+        <h2>📊 Mon Activité</h2>
+        <p><strong>Trajets conduits:</strong> 0</p>
+        <p><strong>Trajets participés:</strong> 0</p>
+        <p><strong>Note moyenne:</strong> ⭐⭐⭐⭐⭐ (5.0)</p>
+    </div>
+</body>
+</html>
