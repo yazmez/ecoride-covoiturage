@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -52,16 +53,16 @@
 </head>
 <body>
     <nav>
-        <a href="index.html">🏠 Accueil</a>
-        <a href="covoiturages.html">🚗 Covoiturages</a>
-        <a href="login.html">🔐 Connexion</a>
-        <a href="contact.html">📞 Contact</a>
-        <a href="user-space.html">👤 Mon Espace</a>
+        <a href="index.php">🏠 Accueil</a>
+        <a href="covoiturages.php">🚗 Covoiturages</a>
+        <a href="login.php">🔐 Connexion</a>
+        <a href="contact.php">📞 Contact</a>
+        <a href="user-space.php">👤 Mon Espace</a> 
     </nav>
 
     <h1>Connexion à EcoRide</h1>
     
-    <form class="login-form">
+    <form class="login-form" action="config-login.php" method="POST">
         <h2>Se Connecter</h2>
         <label for="username">Nom d'utilisateur:</label><br>
         <input type="text" id="username" name="username"><br>
@@ -73,7 +74,7 @@
     </form>
 
     <div class="register-link">
-        <p>Pas de compte? <a href="register.html">Créer un compte</a></p>
+        <p>Pas de compte? <a href="register.php">Créer un compte</a></p>
     </div>
 </body>
 </html>

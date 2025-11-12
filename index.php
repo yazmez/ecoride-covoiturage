@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -32,28 +33,31 @@
             color: white;
             margin: 0 15px;
             text-decoration: none;
-            }
+        }
     </style>
 </head>
 <body>
     <nav>
-        <a href="index.html" >🏠 Accueil</a>
-        <a href="covoiturages.html" >🚗 Covoiturages</a>
-        <a href="login.html" >🔐 Connexion</a>
-        <a href="contact.html" >📞 Contact</a>
-        <a href="user-space.html">👤 Mon Espace</a> 
+        <a href="index.php">🏠 Accueil</a>
+        <a href="covoiturages.php">🚗 Covoiturages</a>
+        <a href="login.php">🔐 Connexion</a>
+        <a href="contact.php">📞 Contact</a>
+        <a href="user-space.php">👤 Mon Espace</a> 
     </nav>
+    
     <div class="header">
-        <h1> EcoRide</h1>
+        <h1>EcoRide</h1>
         <p>Votre plateforme de covoiturage écologique</p>
     </div>
     
     <div class="search-bar">
         <h2>Trouvez votre trajet</h2>
-        <input type="text" placeholder="Départ">
-        <input type="text" placeholder="Arrivée">
-        <input type="date">
-        <button>Rechercher</button>
+        <form action="covoiturages.php" method="GET">
+            <input type="text" name="depart" placeholder="Départ" required>
+            <input type="text" name="arrivee" placeholder="Arrivée" required>
+            <input type="date" name="date" required>
+            <button type="submit">Rechercher</button>
+        </form>
     </div>
 </body>
 </html>

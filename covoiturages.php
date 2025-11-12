@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -43,11 +44,11 @@
     <body>
 
     <nav>
-        <a href="index.html">🏠 Accueil</a>
-        <a href="covoiturages.html">🚗 Covoiturages</a>
-        <a href="login.html">🔐 Connexion</a>
-        <a href="contact.html">📞 Contact</a>
-        <a href="user-space.html">👤 Mon Espace</a>
+        <a href="index.php">🏠 Accueil</a>
+        <a href="covoiturages.php">🚗 Covoiturages</a>
+        <a href="login.php">🔐 Connexion</a>
+        <a href="contact.php">📞 Contact</a>
+        <a href="user-space.php">👤 Mon Espace</a> 
     </nav>
     <h1>page des Covoiturages</h1>
     <p>cette page affichera les trajets disponible</p>
@@ -65,7 +66,7 @@
     <p><strong>Places:</strong> 3 restantes</p>
     <p><strong>Prix:</strong> 25€</p>
     <p><strong>Écologique:</strong> ✅ Voiture électrique</p>
-    <a href="vue-detaillee.html" style="text-decoration: none;">
+    <a href="vue-detaillee.php" style="text-decoration: none;">
     <button style="padding: 8px 15px; background: #2e8b57; color: white; border: none; border-radius: 4px;">Voir les détails</button></a>
 </div>
 </body> 

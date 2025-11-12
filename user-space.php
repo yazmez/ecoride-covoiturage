@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -70,20 +71,21 @@
     </style>
 </head>
 <body>
+    <h1>Bienvenue, <?php echo $_SESSION['user']; ?> ! 🌱</h1>
     <nav>
-      <a href="index.html">🏠 Accueil</a>
-        <a href="covoiturages.html">🚗 Covoiturages</a>
-        <a href="login.html">🔐 Connexion</a>
-        <a href="contact.html">📞 Contact</a>
-        <a href="user-space.html">👤 Mon Espace</a>
+      <a href="index.php">🏠 Accueil</a>
+        <a href="covoiturages.php">🚗 Covoiturages</a>
+        <a href="login.php">🔐 Connexion</a>
+        <a href="contact.php">📞 Contact</a>
+        <a href="user-space.php">👤 Mon Espace</a>
     </nav>
 
     <div class="user-section">
         <div class="profile-info">
             <div class="profile-avatar">👤</div>
             <div>
-                <h1>Espace de Yazid M.</h1>
-                <p><span class="credits-badge">20 crédits disponibles</span></p>
+                Espace de <?php echo $_SESSION['user']; ?>.
+                <p><span class="credits-badge">20 crédits disponibles (Bienvenue, <?php echo $_SESSION['user']; ?>!) </span></p>
                 <p>Membre depuis: Décembre 2024</p>
             </div>
         </div>

@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -60,11 +61,11 @@
 </head>
 <body>
     <nav>
-        <a href="index.html">🏠 Accueil</a>
-        <a href="covoiturages.html">🚗 Covoiturages</a>
-        <a href="login.html">🔐 Connexion</a>
-        <a href="contact.html">📞 Contact</a>
-        <a href="user-space.html">👤 Mon Espace</a>
+        <a href="index.php">🏠 Accueil</a>
+        <a href="covoiturages.php">🚗 Covoiturages</a>
+        <a href="login.php">🔐 Connexion</a>
+        <a href="contact.php">📞 Contact</a>
+        <a href="user-space.php">👤 Mon Espace</a> 
     </nav>
 
     <div class="contact-container">
