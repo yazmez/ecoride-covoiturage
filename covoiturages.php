@@ -167,7 +167,7 @@ if ($result->num_rows > 0) {
                 <p><strong>Écologique:</strong> <span class="non-eco-badge">⛽ Non-écologique</span></p>
             <?php endif; ?>
             
-            <a href="vue-detaillee.php" style="text-decoration: none;">
+            <a href="vue-detaillee.php?ride_id=<?php echo $row['covoiturage_id']; ?>" style="text-decoration: none;">
                 <button style="padding: 8px 15px; background: #2e8b57; color: white; border: none; border-radius: 4px;">
                     Voir les détails
                 </button>

@@ -1,4 +1,23 @@
 <?php session_start(); ?>
+<?php
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+    exit();
+}
+if (isset($_SESSION['success_message'])) {
+    echo "<div style='background: #d4edda; color: #155724; padding: 15px; margin: 20px; border: 1px solid #c3e6cb; border-radius: 5px;'>";
+    echo $_SESSION['success_message'];
+    echo "</div>";
+    unset($_SESSION['success_message']);
+}
+
+if (isset($_SESSION['error_message'])) {
+    echo "<div style='background: #f8d7da; color: #721c24; padding: 15px; margin: 20px; border: 1px solid #f5c6cb; border-radius: 5px;'>";
+    echo $_SESSION['error_message'];
+    echo "</div>";
+    unset($_SESSION['error_message']);
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -71,9 +90,12 @@
     </style>
 </head>
 <body>
+<?php
+require_once 'config/config.php';
+?>
     <h1>Bienvenue, <?php echo $_SESSION['user']; ?> ! 🌱</h1>
     <nav>
-      <a href="index.php">🏠 Accueil</a>
+        <a href="index.php">🏠 Accueil</a>
         <a href="covoiturages.php">🚗 Covoiturages</a>
         <a href="login.php">🔐 Connexion</a>
         <a href="contact.php">📞 Contact</a>
@@ -81,53 +103,123 @@
     </nav>
 
     <div class="user-section">
-        <div class="profile-info">
-            <div class="profile-avatar">👤</div>
-            <div>
-                Espace de <?php echo $_SESSION['user']; ?>.
-                <p><span class="credits-badge">20 crédits disponibles (Bienvenue, <?php echo $_SESSION['user']; ?>!) </span></p>
-                <p>Membre depuis: Décembre 2024</p>
+        <h2>⚙️ Mes Préférences</h2>
+        <div class="form-section" style="margin-top: 40px; padding: 20px; border: 2px solid #1f6b4e; border-radius: 10px;">
+            <h3 style="color: #1f6b4e;">🚗 Créer un nouveau covoiturage</h3>
+            
+            <form action="config/create-ride.php" method="POST">
+                <div style="margin: 10px 0;">
+                    <label for="departure">Ville de départ:</label>
+                    <input type="text" id="departure" name="departure" required style="width: 100%; padding: 8px; margin: 5px 0;">
+                </div>
+                
+                <div style="margin: 10px 0;">
+                    <label for="arrival">Ville d'arrivée:</label>
+                    <input type="text" id="arrival" name="arrival" required style="width: 100%; padding: 8px; margin: 5px 0;">
+                </div>
+                
+                <div style="margin: 10px 0;">
+                    <label for="date_time">Date et heure de départ:</label>
+                    <input type="datetime-local" id="date_time" name="date_time" required style="width: 100%; padding: 8px; margin: 5px 0;">
+                </div>
+                
+                <div style="margin: 10px 0;">
+                    <label for="seats">Nombre de places disponibles:</label>
+                    <input type="number" id="seats" name="seats" min="1" max="8" required style="width: 100%; padding: 8px; margin: 5px 0;">
+                </div>
+                
+                <div style="margin: 10px 0;">
+                    <label for="price">Prix par passager (en crédits):</label>
+                    <input type="number" id="price" name="price" min="1" step="1" required style="width: 100%; padding: 8px; margin: 5px 0;">
+                </div>
+                
+                <div style="margin: 10px 0;">
+                    <label for="vehicle_id">Sélectionner votre véhicule:</label>
+                    <select id="vehicle_id" name="vehicle_id" required style="width: 100%; padding: 8px; margin: 5px 0;">
+    <option value="">-- Choisir un véhicule --</option>
+    <?php
+    if (isset($_SESSION['utilisateur_id'])) {
+        $user_id = $_SESSION['utilisateur_id'];
+        $sql = "SELECT v.voiture_id, v.modele 
+                FROM voiture v 
+                JOIN gere g ON v.voiture_id = g.voiture_id 
+                WHERE g.utilisateur_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows > 0) {
+            while ($vehicle = $result->fetch_assoc()) {
+                echo "<option value='{$vehicle['voiture_id']}'>";
+                echo $vehicle['modele'];
+                echo "</option>";
+            }
+        } else {
+            echo "<option value='' disabled>Aucun véhicule - ajoutez-en un d'abord</option>";
+        }
+    }
+    ?>
+</select>
+                </div>
+                
+                <div style="margin: 10px 0;">
+                    <label for="preferences">Préférences supplémentaires:</label>
+                    <textarea id="preferences" name="preferences" placeholder="Musique, arrêts, etc..." style="width: 100%; padding: 8px; margin: 5px 0; height: 80px;"></textarea>
+                </div>
+                
+                <button type="submit" style="background-color: #1f6b4e; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin-top: 15px;">Créer le covoiturage</button>
+            </form>
+        </div>
+        
+        <div class="user-section">
+            <div class="profile-info">
+                <div class="profile-avatar">👤</div>
+                <div>
+                    Espace de <?php echo $_SESSION['user']; ?>.
+                    <p><span class="credits-badge">20 crédits disponibles (Bienvenue, <?php echo $_SESSION['user']; ?>!) </span></p>
+                    <p>Membre depuis: Décembre 2024</p>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="user-section">
-    <h2>🚗 Mes Véhicules</h2>
-    <p><em>Aucun véhicule enregistré</em></p>
-    
-    <h3>Ajouter un véhicule</h3>
-    <form class="vehicle-form">
-        <label>Plaque d'immatriculation:</label>
-        <input type="text" value="CZ-536-ET">
+        <div class="user-section">
+            <h2>🚗 Mes Véhicules</h2>
+            <p><em>Aucun véhicule enregistré</em></p>
+            
+            <h3>Ajouter un véhicule</h3>
+            <form class="vehicle-form" action="config/add-vehicle.php" method="POST">
+                <label>Plaque d'immatriculation:</label>
+                <input type="text" name="plaque" value="CZ-536-ET" required>
+                
+                <label>Date de première immatriculation:</label>
+                <input type="date" name="date_immat" value="2020-11-20" required>
+                
+                <label>Marque du véhicule:</label>
+                <input type="text" name="marque" value="BMW" required>
+                
+                <label>Modèle:</label>
+                <input type="text" name="modele" value="118d" required>
+                
+                <label>Couleur:</label>
+                <input type="text" name="couleur" value="Bleu" required>
+                
+                <label>Nombre de places:</label>
+                <input type="number" name="places" value="5" min="2" max="9" required>
+                
+                <label>Énergie utilisée:</label>
+                <select name="energie" required>
+                    <option value="">Choisir...</option>
+                    <option value="electrique">Électrique</option>
+                    <option value="essence">Essence</option>
+                    <option value="diesel" selected>Diesel</option> 
+                    <option value="hybride">Hybride</option>
+                </select>
+                
+                <button type="submit">✅ Enregistrer le véhicule</button>
+            </form>
+        </div>
         
-        <label>Date de première immatriculation:</label>
-        <input type="date" value="2020-11-20">
-        
-        <label>Marque du véhicule:</label>
-        <input type="text" value="BMW">
-        
-        <label>Modèle:</label>
-        <input type="text" value="118d">
-        
-        <label>Couleur:</label>
-        <input type="text" value="Bleu">
-        
-        <label>Nombre de places:</label>
-        <input type="number" value="5" min="2" max="9">
-        
-        <label>Énergie utilisée:</label>
-        <select>
-            <option value="">Choisir...</option>
-            <option>Électrique</option>
-            <option>Essence</option>
-            <option selected>Diesel</option>
-            <option>Hybride</option>
-        </select>
-        
-        <button type="submit">✅ Enregistrer le véhicule</button>
-    </form>
-    <div class="user-section">
-        <h2>⚙️ Mes Préférences</h2>
         <div class="preferences">
             <p><input type="checkbox"> ✅ Accepte les fumeurs</p>
             <p><input type="checkbox"> ✅ Accepte les animaux</p>
@@ -138,7 +230,7 @@
             <button>💾 Enregistrer les préférences</button>
         </div>
     </div>
-
+    
     <div class="user-section">
         <h2>📊 Mon Activité</h2>
         <p><strong>Trajets conduits:</strong> 0</p>
