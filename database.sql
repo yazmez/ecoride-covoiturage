@@ -123,3 +123,10 @@ CREATE TABLE depose (
     FOREIGN KEY (utilisateur_id) REFERENCES utilisateur(utilisateur_id),
     FOREIGN KEY (avis_id) REFERENCES avis(avis_id)
 );
+CREATE TABLE utilise (
+    voiture_id INT,
+    covoiturage_id INT,
+    PRIMARY KEY (voiture_id, covoiturage_id),
+    FOREIGN KEY (voiture_id) REFERENCES voiture(voiture_id),
+    FOREIGN KEY (covoiturage_id) REFERENCES covoiturage(covoiturage_id)
+);
