@@ -75,62 +75,114 @@
         <input type="date" name="date" style="padding: 8px; margin: 5px;" value="<?php echo isset($_GET['date']) ? $_GET['date'] : ''; ?>">
         <button type="submit">Rechercher</button>
     </form></div>
-    <?php
-    $conn = new mysqli('localhost', 'root', '', 'EcoRide');
-    
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);}
-    $sql = "SELECT c.*, u.pseudo, u.nom, u.prenom, v.energie, v.modele, m.libelle as marque 
-            FROM covoiturage c
-            JOIN utilise ut ON c.covoiturage_id = ut.covoiturage_id
-            JOIN voiture v ON ut.voiture_id = v.voiture_id
-            JOIN detient d ON v.voiture_id = d.voiture_id
-            JOIN marque m ON d.marque_id = m.marque_id
-            JOIN gere g ON v.voiture_id = g.voiture_id
-            JOIN utilisateur u ON g.utilisateur_id = u.utilisateur_id
-            WHERE c.nb_place > 0 AND c.statut = 'planifié'";
-
-    if (isset($_GET['depart']) && !empty($_GET['depart'])) {
-        $sql .= " AND c.lieu_depart LIKE '%" . $conn->real_escape_string($_GET['depart']) . "%'";}
-    if (isset($_GET['arrivee']) && !empty($_GET['arrivee'])) {
-        $sql .= " AND c.lieu_arrivee LIKE '%" . $conn->real_escape_string($_GET['arrivee']) . "%'";
-    }
-    if (isset($_GET['date']) && !empty($_GET['date'])) {$sql .= " AND c.date_depart = '" . $conn->real_escape_string($_GET['date']) . "'";}
-
-    $result = $conn->query($sql);
-
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            $isEco = ($row['energie'] == 'Électrique');
-            ?>
-            <div class="ride-card">
-                <h3>🚗 <?php echo $row['lieu_depart']; ?> → <?php echo $row['lieu_arrivee']; ?></h3>
-                <p><strong>Conducteur:</strong> <?php echo $row['pseudo']; ?> ⭐⭐⭐⭐☆ (4.0)</p>
-                <p><strong>Date:</strong> <?php echo date('d/m/Y', strtotime($row['date_depart'])); ?> - <?php echo date('H:i', strtotime($row['heure_depart'])); ?></p>
-                <p><strong>Places:</strong> <?php echo $row['nb_place']; ?> restante(s)</p>
-                <p><strong>Prix:</strong> <?php echo $row['prix_personne']; ?>€</p>
-                <p><strong>Véhicule:</strong> <?php echo $row['marque'] . ' ' . $row['modele']; ?></p>
-                
-                <?php if ($isEco): ?>
-                    <p><strong>Écologique:</strong> <span class="eco-badge">✅ Voiture électrique</span></p>
-                <?php else: ?>
-                    <p><strong>Écologique:</strong> <span class="non-eco-badge">⛽ Non-écologique</span></p>
-                <?php endif; ?>
-                
-                <a href="vue-detaillee.php" style="text-decoration: none;">
-                    <button style="padding: 8px 15px; background: #2e8b57; color: white; border: none; border-radius: 4px;">
-                        Voir les détails
-                    </button>
-                </a>
+     </div>
+    <div style="background: white; padding: 20px; margin: 20px; border-radius: 8px;">
+        <h3>🎛️ Filtres avancés</h3>
+        <form method="GET" action="covoiturages.php">
+            <input type="hidden" name="depart" value="<?php echo isset($_GET['depart']) ? $_GET['depart'] : ''; ?>">
+            <input type="hidden" name="arrivee" value="<?php echo isset($_GET['arrivee']) ? $_GET['arrivee'] : ''; ?>">
+            <input type="hidden" name="date" value="<?php echo isset($_GET['date']) ? $_GET['date'] : ''; ?>">
+            <div style="margin: 10px 0;">
+                <label>
+                    <input type="checkbox" name="ecologique" value="1" <?php echo isset($_GET['ecologique']) ? 'checked' : ''; ?>>
+                    🌱 Voyages écologiques uniquement (voitures électriques)
+                </label>
+         </div>
+            <div style="margin: 10px 0;">
+                <label>💰 Prix maximum: 
+                    <input type="number" name="prix_max" placeholder="50" style="width: 80px;" 
+                           value="<?php echo isset($_GET['prix_max']) ? $_GET['prix_max'] : ''; ?>"> €
+                </label>
             </div>
-            <?php
-        }} else {
-   echo "<div style='background: white; padding: 20px; margin: 20px; border-radius: 8px;'>";
-        echo "<p>Aucun covoiturage trouvé pour votre recherche.</p>";
-        echo "</div>";}
     
-    $conn->close();
-    ?>
+            <div style="margin: 10px 0;">
+                <label>⏱️ Durée maximum: 
+                    <input type="number" name="duree_max" placeholder="4" style="width: 80px;" 
+                           value="<?php echo isset($_GET['duree_max']) ? $_GET['duree_max'] : ''; ?>"> heures
+                </label>
+            </div>
+            <div style="margin: 10px 0;">
+                <label>⭐ Note minimum du conducteur: 
+                    <select name="note_min">
+                        <option value="">Toutes</option>
+                        <option value="3" <?php echo (isset($_GET['note_min']) && $_GET['note_min'] == '3') ? 'selected' : ''; ?>>3+</option>
+                        <option value="4" <?php echo (isset($_GET['note_min']) && $_GET['note_min'] == '4') ? 'selected' : ''; ?>>4+</option>
+                        <option value="5" <?php echo (isset($_GET['note_min']) && $_GET['note_min'] == '5') ? 'selected' : ''; ?>>5</option>
+                    </select>
+                </label>
+            </div>
+            
+            <button type="submit" style="padding: 8px 15px; background: #3498db; color: white; border: none; border-radius: 4px;">
+                🔄 Appliquer les filtres
+            </button>
+        </form>
+    </div>
+   <?php
+$conn = new mysqli('localhost', 'root', '', 'EcoRide');
+    
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);}
+$sql = "SELECT c.*, u.pseudo, u.nom, u.prenom, v.energie, v.modele, m.libelle as marque 
+        FROM covoiturage c
+        JOIN utilise ut ON c.covoiturage_id = ut.covoiturage_id
+        JOIN voiture v ON ut.voiture_id = v.voiture_id
+        JOIN detient d ON v.voiture_id = d.voiture_id
+        JOIN marque m ON d.marque_id = m.marque_id
+        JOIN gere g ON v.voiture_id = g.voiture_id
+        JOIN utilisateur u ON g.utilisateur_id = u.utilisateur_id
+        WHERE c.nb_place > 0 AND c.statut = 'planifié'";
+if (isset($_GET['depart']) && !empty($_GET['depart'])) {
+    $sql .= " AND c.lieu_depart LIKE '%" . $conn->real_escape_string($_GET['depart']) . "%'";}
+if (isset($_GET['arrivee']) && !empty($_GET['arrivee'])) {
+    $sql .= " AND c.lieu_arrivee LIKE '%" . $conn->real_escape_string($_GET['arrivee']) . "%'";}
+if (isset($_GET['date']) && !empty($_GET['date'])) {
+    $sql .= " AND c.date_depart = '" . $conn->real_escape_string($_GET['date']) . "'";}
+
+if (isset($_GET['ecologique']) && $_GET['ecologique'] == '1') {
+    $sql .= " AND v.energie = 'Électrique'";}
+if (isset($_GET['prix_max']) && !empty($_GET['prix_max'])) {
+    $sql .= " AND c.prix_personne <= " . floatval($_GET['prix_max']);}
+if (isset($_GET['duree_max']) && !empty($_GET['duree_max'])) {
+    $sql .= " AND TIMESTAMPDIFF(HOUR, CONCAT(c.date_depart, ' ', c.heure_depart), CONCAT(c.date_arrivee, ' ', c.heure_arrivee)) <= " . intval($_GET['duree_max']);}
+if (isset($_GET['note_min']) && !empty($_GET['note_min'])) {
+    $sql .= " AND 4.0 >= " . floatval($_GET['note_min']);}
+
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        $isEco = ($row['energie'] == 'Électrique');
+        ?>
+        <div class="ride-card">
+            <h3>🚗 <?php echo $row['lieu_depart']; ?> → <?php echo $row['lieu_arrivee']; ?></h3>
+            <p><strong>Conducteur:</strong> <?php echo $row['pseudo']; ?> ⭐⭐⭐⭐☆ (4.0)</p>
+            <p><strong>Date:</strong> <?php echo date('d/m/Y', strtotime($row['date_depart'])); ?> - <?php echo date('H:i', strtotime($row['heure_depart'])); ?></p>
+            <p><strong>Places:</strong> <?php echo $row['nb_place']; ?> restante(s)</p>
+            <p><strong>Prix:</strong> <?php echo $row['prix_personne']; ?>€</p>
+            <p><strong>Véhicule:</strong> <?php echo $row['marque'] . ' ' . $row['modele']; ?></p>
+            
+            <?php if ($isEco): ?>
+                <p><strong>Écologique:</strong> <span class="eco-badge">✅ Voiture électrique</span></p>
+            <?php else: ?>
+                <p><strong>Écologique:</strong> <span class="non-eco-badge">⛽ Non-écologique</span></p>
+            <?php endif; ?>
+            
+            <a href="vue-detaillee.php" style="text-decoration: none;">
+                <button style="padding: 8px 15px; background: #2e8b57; color: white; border: none; border-radius: 4px;">
+                    Voir les détails
+                </button>
+            </a>
+        </div>
+        <?php
+    }
+} else {
+    echo "<div style='background: white; padding: 20px; margin: 20px; border-radius: 8px;'>";
+    echo "<p>Aucun covoiturage trouvé pour votre recherche.</p>";
+    echo "</div>";
+}
+
+$conn->close();
+?>
 </body> 
 </html>
     
