@@ -21,17 +21,22 @@ if ($_POST) {
     $heure_depart = date('H:i:s', strtotime($date_time));
     
     try {
+    
         $sql_ride = "INSERT INTO covoiturage (lieu_depart, lieu_arrivee, date_depart, heure_depart, nb_place, prix_personne, statut) 
-                    VALUES (?, ?, ?, ?, ?, ?, 'active')";
-        
+                    VALUES (?, ?, ?, ?, ?, ?, 'planifié')";
         $stmt_ride = $conn->prepare($sql_ride);
         $stmt_ride->bind_param("ssssid", $departure, $arrival, $date_depart, $heure_depart, $seats, $price);
         $stmt_ride->execute();
         $ride_id = $stmt_ride->insert_id;
+
         $sql_link = "INSERT INTO utilise (voiture_id, covoiturage_id) VALUES (?, ?)";
         $stmt_link = $conn->prepare($sql_link);
         $stmt_link->bind_param("ii", $vehicle_id, $ride_id);
         $stmt_link->execute();
+        $sql_driver = "INSERT INTO participe (utilisateur_id, covoiturage_id, est_conducteur) VALUES (?, ?, TRUE)";
+        $stmt_driver = $conn->prepare($sql_driver);
+        $stmt_driver->bind_param("ii", $user_id, $ride_id);
+        $stmt_driver->execute();
         
         $_SESSION['success_message'] = "✅ Covoiturage créé avec succès!";
     } catch (Exception $e) {
@@ -39,6 +44,5 @@ if ($_POST) {
     }
     
     header("Location: ../user-space.php");
-    exit();
-}
+    exit();}
 ?>

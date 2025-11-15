@@ -1,12 +1,12 @@
 <?php 
 session_start();
 
-// Get the ride ID from URL and connect to database
+
 $ride_id = isset($_GET['ride_id']) ? intval($_GET['ride_id']) : 1;
 
 require_once 'config/config.php';
 
-// Fetch the specific ride details from database
+
 $sql = "SELECT c.*, u.pseudo, u.nom, u.prenom, v.energie, v.modele, m.libelle as marque 
         FROM covoiturage c
         JOIN utilise ut ON c.covoiturage_id = ut.covoiturage_id
@@ -25,7 +25,6 @@ $result = $stmt->get_result();
 if ($result->num_rows > 0) {
     $ride = $result->fetch_assoc();
 } else {
-    // If ride not found, show error message
     echo "<div style='background: red; color: white; padding: 20px; margin: 20px;'>";
     echo "<h2>❌ Covoiturage non trouvé</h2>";
     echo "<p>Le trajet demandé n'existe pas.</p>";

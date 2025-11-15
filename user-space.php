@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php session_start(); 
+if (isset($_SESSION['error_message']) && $_SESSION['error_message'] == "Utilisateur non trouvé.") {
+    unset($_SESSION['error_message']);
+}
+?>
 <?php
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
@@ -232,10 +236,84 @@ require_once 'config/config.php';
     </div>
     
     <div class="user-section">
-        <h2>📊 Mon Activité</h2>
-        <p><strong>Trajets conduits:</strong> 0</p>
-        <p><strong>Trajets participés:</strong> 0</p>
-        <p><strong>Note moyenne:</strong> ⭐⭐⭐⭐⭐ (5.0)</p>
-    </div>
+    <h2>📊 Mon Activité</h2>
+    <?php
+    $user_id = $_SESSION['utilisateur_id'];
+    $sql = "SELECT c.*, p.est_conducteur 
+            FROM covoiturage c 
+            JOIN participe p ON c.covoiturage_id = p.covoiturage_id 
+            WHERE p.utilisateur_id = ? 
+            ORDER BY c.date_depart DESC";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $trips = $stmt->get_result();
+    ?>
+    <h3>🚗 Mes Trajets</h3>
+    <?php if ($trips->num_rows > 0): ?>
+        <?php while($trip = $trips->fetch_assoc()): ?>
+            <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0; background: white;">
+                <strong>
+                    <?php echo $trip['lieu_depart']; ?> → <?php echo $trip['lieu_arrivee']; ?>
+                    <?php if ($trip['est_conducteur']): ?>
+                        <span style="background: green; color: white; padding: 2px 5px; border-radius: 3px;">Conducteur</span>
+                    <?php else: ?>
+                        <span style="background: blue; color: white; padding: 2px 5px; border-radius: 3px;">Passager</span>
+                    <?php endif; ?>
+                </strong>
+                <p>📅 <?php echo $trip['date_depart']; ?> à <?php echo $trip['heure_depart']; ?></p>
+                <p>💰 <?php echo $trip['prix_personne']; ?> crédits</p>
+                <p>📊 Statut: <?php echo $trip['statut']; ?></p>
+                <?php
+if ($trip['statut'] == 'terminé' && !$trip['est_conducteur']) {
+    echo '<form action="config/submit_review.php" method="POST">';
+    echo '<input type="hidden" name="trip_id" value="'.$trip['covoiturage_id'].'">';
+    echo '<p><strong>Laisser un avis:</strong></p>';
+    echo '<div style="margin: 5px 0;">';
+    echo 'Note: ';
+    for ($i = 1; $i <= 5; $i++) {
+        echo '<input type="radio" name="rating" value="'.$i.'" required> '.$i.'⭐ ';}
+    echo '</div>';
+    echo '<div style="margin: 5px 0;">';
+    echo '<textarea name="comment" placeholder="Commentaire..." style="width: 100%; padding: 5px;"></textarea>';
+    echo '</div>';
+    echo '<button type="submit" style="background: #1f6b4e; color: white; padding: 5px 10px; border: none; cursor: pointer;">';
+    echo '📝 Envoyer l\'avis';
+    echo '</button>';
+    echo '</form>';}
+?>
+                <?php
+if ($trip['est_conducteur']) {
+    if ($trip['statut'] == 'planifié') {
+        echo '<form action="config/start_trip.php" method="POST" style="display: inline;">';
+        echo '<input type="hidden" name="trip_id" value="'.$trip['covoiturage_id'].'">';
+        echo '<button type="submit" style="background: green; color: white; padding: 5px 10px; border: none; cursor: pointer; margin-right: 5px;">';
+        echo '🚗 Démarrer';
+        echo '</button></form>';
+        
+        echo '<form action="config/cancel_trip.php" method="POST" style="display: inline;">';
+        echo '<input type="hidden" name="trip_id" value="'.$trip['covoiturage_id'].'">';
+        echo '<button type="submit" style="background: red; color: white; padding: 5px 10px; border: none; cursor: pointer;">';
+        echo '❌ Annuler';
+        echo '</button></form>';} 
+    elseif ($trip['statut'] == 'en_cours') {
+        echo '<form action="config/end_trip.php" method="POST">';
+        echo '<input type="hidden" name="trip_id" value="'.$trip['covoiturage_id'].'">';
+        echo '<button type="submit" style="background: orange; color: black; padding: 5px 10px; border: none; cursor: pointer;">';
+        echo ' Arrivée';
+        echo '</button></form>';}} else {
+    if ($trip['statut'] == 'planifié') {
+        echo '<form action="config/cancel_trip.php" method="POST">';
+        echo '<input type="hidden" name="trip_id" value="'.$trip['covoiturage_id'].'">';
+        echo '<button type="submit" style="background: red; color: white; padding: 5px 10px; border: none; cursor: pointer;">';
+        echo '❌ Annuler';
+        echo '</button></form>'; }}
+?>
+            </div>
+        <?php endwhile; ?>
+    <?php else: ?>
+        <p><em>Vous n'avez aucun trajet pour le moment.</em></p>
+    <?php endif; ?>
+</div>
 </body>
 </html>

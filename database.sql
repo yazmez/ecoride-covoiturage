@@ -104,6 +104,7 @@ CREATE TABLE covoiturage (
 CREATE TABLE participe (
     utilisateur_id INT,
     covoiturage_id INT,
+    est_conducteur BOOLEAN DEFAULT FALSE,
     PRIMARY KEY (utilisateur_id, covoiturage_id),
     FOREIGN KEY (utilisateur_id) REFERENCES utilisateur(utilisateur_id),
     FOREIGN KEY (covoiturage_id) REFERENCES covoiturage(covoiturage_id)

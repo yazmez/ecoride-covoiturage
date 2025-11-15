@@ -1,12 +1,11 @@
 <?php
 session_start();
-require_once 'config.php';
-
+require_once 'config/config.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset($_POST['password'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
     
-    $sql = "SELECT utilisateur_id, password FROM utilisateur WHERE pseudo = ?";
+    $sql = "SELECT utilisateur_id, password FROM utilisateur WHERE email = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $username);
     $stmt->execute();
@@ -19,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
         if (password_verify($password, $user['password'])) {
 
             $_SESSION['utilisateur_id'] = $user['utilisateur_id'];
-            $_SESSION['username'] = $username;
+            $_SESSION['user'] = $username;
             $_SESSION['success_message'] = "Connexion réussie!";
             header("Location: user-space.php");
             exit();
