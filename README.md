@@ -1,6 +1,6 @@
- EcoRide - Plateforme de Covoiturage Écologique
+EcoRide - Plateforme de Covoiturage Écologique
 
- Description:
+Description:
 Application web de covoiturage écologique développée dans le cadre du TP DWWM.
 
 Prérequis:
@@ -12,13 +12,13 @@ Installation:
 2. Cloner le repository
 3. Copier les fichiers dans `C:\xampp\htdocs\ecoride\`
 4. Démarrer Apache et MySQL dans XAMPP
-5. Importer la base de données (voir `database.sql`)
+5. Importer la base de données (voir `database.sql` et `sample-data.sql`)
 6. Visiter `http://localhost/ecoride/`
 
 Comptes de test:
-- **Admin:** admin@ecoride.fr / studi25
-- **Employé:** employe@ecoride.fr / I8mylife
-- **Utilisateur:** user@example.com / blablawhat?
+- **Admin:** admin / admin123
+- **Employé:** yaz98 / idk-dude25  
+- **Utilisateur:** JeanEco / password
 
 Déploiement:
 L'application est déployée sur:

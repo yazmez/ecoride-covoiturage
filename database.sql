@@ -131,3 +131,17 @@ CREATE TABLE utilise (
     FOREIGN KEY (voiture_id) REFERENCES voiture(voiture_id),
     FOREIGN KEY (covoiturage_id) REFERENCES covoiturage(covoiturage_id)
 );
+CREATE TABLE employe (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    pseudo VARCHAR(50) UNIQUE NOT NULL,
+    mot_de_passe VARCHAR(255) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    date_creation DATETIME DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE admin (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    pseudo VARCHAR(50) UNIQUE NOT NULL,
+    mot_de_passe VARCHAR(255) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    date_creation DATETIME DEFAULT CURRENT_TIMESTAMP);
+ALTER TABLE utilisateur ADD COLUMN suspended BOOLEAN DEFAULT FALSE;
+ALTER TABLE employe ADD COLUMN suspended BOOLEAN DEFAULT FALSE;

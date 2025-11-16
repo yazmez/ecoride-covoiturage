@@ -29,9 +29,15 @@ INSERT INTO utilise (voiture_id, covoiturage_id) VALUES
 (1, 1), (2, 2), (3, 3), (4, 4);
 
 INSERT INTO avis (commentaire, note, statut) VALUES
-('Très bon conducteur, ponctuel et sympathique!', '5', 'validé'),
+('Très bon conducteur, ponctuel et sympathique!', '5', 'en attente'),
+('La voiture était propre, mais le conducteur est arrivé en retard.', '4', 'en attente'),
+('Mauvaise expérience, le conducteur était distrait.', '2', 'en attente'),
 ('le mec arrete pas de parler', '3', 'validé'),
 ('Excellent covoiturage, je recommande', '5', 'validé');
 
 INSERT INTO depose (utilisateur_id, avis_id) VALUES
 (2, 1), (3, 2), (1, 3);
+INSERT INTO employe (pseudo, mot_de_passe, email) VALUES 
+('employe1', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'employe@ecoride.fr');
+INSERT INTO admin (pseudo, mot_de_passe, email) VALUES 
+('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@ecoride.fr');
