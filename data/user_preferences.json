@@ -1,0 +1,15 @@
+{
+    "1": {
+        "user_id": 1,
+        "preferences": {
+            "fumeur": 1,
+            "animaux": 1,
+            "silence": 0,
+            "discussion": 1,
+            "musique": 1,
+            "collations": 0
+        },
+        "created_at": "2025-11-18 11:46:23",
+        "updated_at": "2025-11-18 11:46:23"
+    }
+}

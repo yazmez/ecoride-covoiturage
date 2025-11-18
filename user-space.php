@@ -105,37 +105,42 @@ require_once 'config/config.php';
         <a href="contact.php">📞 Contact</a>
         <a href="user-space.php">👤 Mon Espace</a>
     </nav>
-
-    <div class="user-section">
-        <h2>⚙️ Mes Préférences</h2>
-        <div class="form-section" style="margin-top: 40px; padding: 20px; border: 2px solid #1f6b4e; border-radius: 10px;">
-            <h3 style="color: #1f6b4e;">🚗 Créer un nouveau covoiturage</h3>
-            
-            <form action="config/create-ride.php" method="POST">
-                <div style="margin: 10px 0;">
-                    <label for="departure">Ville de départ:</label>
-                    <input type="text" id="departure" name="departure" required style="width: 100%; padding: 8px; margin: 5px 0;">
-                </div>
-                
-                <div style="margin: 10px 0;">
-                    <label for="arrival">Ville d'arrivée:</label>
-                    <input type="text" id="arrival" name="arrival" required style="width: 100%; padding: 8px; margin: 5px 0;">
-                </div>
-                
-                <div style="margin: 10px 0;">
-                    <label for="date_time">Date et heure de départ:</label>
-                    <input type="datetime-local" id="date_time" name="date_time" required style="width: 100%; padding: 8px; margin: 5px 0;">
-                </div>
-                
-                <div style="margin: 10px 0;">
-                    <label for="seats">Nombre de places disponibles:</label>
-                    <input type="number" id="seats" name="seats" min="1" max="8" required style="width: 100%; padding: 8px; margin: 5px 0;">
-                </div>
-                
-                <div style="margin: 10px 0;">
-                    <label for="price">Prix par passager (en crédits):</label>
-                    <input type="number" id="price" name="price" min="1" step="1" required style="width: 100%; padding: 8px; margin: 5px 0;">
-                </div>
+    <div class="preferences">
+    <h3>⚙️ Mes Préférences (Stockées en NoSQL)</h3>
+    <?php
+    require_once 'config/nosql.php';
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preferences_submit'])) {
+        $preferences = [
+            'fumeur' => isset($_POST['fumeur']) ? 1 : 0,
+            'animaux' => isset($_POST['animaux']) ? 1 : 0,
+            'silence' => isset($_POST['silence']) ? 1 : 0,
+            'discussion' => isset($_POST['discussion']) ? 1 : 0,
+            'musique' => isset($_POST['musique']) ? 1 : 0,
+            'collations' => isset($_POST['collations']) ? 1 : 0
+        ];
+        
+        if ($nosql->saveUserPreferences($_SESSION['utilisateur_id'], $preferences)) {
+            echo "<div style='background: #d4edda; color: #155724; padding: 10px; margin: 10px 0; border-radius: 5px;'>";
+            echo "✅ Préférences sauvegardées dans la base NoSQL!";
+            echo "</div>";
+        }}
+    $userPrefs = $nosql->getUserPreferences($_SESSION['utilisateur_id']);
+    ?>
+    <form method="POST">
+        <p><input type="checkbox" name="fumeur" value="1" <?php echo ($userPrefs['fumeur'] ?? 0) ? 'checked' : ''; ?>> ✅ Accepte les fumeurs</p>
+        <p><input type="checkbox" name="animaux" value="1" <?php echo ($userPrefs['animaux'] ?? 0) ? 'checked' : ''; ?>> ✅ Accepte les animaux</p>
+        <p><input type="checkbox" name="silence" value="1" <?php echo ($userPrefs['silence'] ?? 0) ? 'checked' : ''; ?>> 🔇 Préfère le silence</p>
+        <p><input type="checkbox" name="discussion" value="1" <?php echo ($userPrefs['discussion'] ?? 0) ? 'checked' : ''; ?>> 💬 Aime discuter</p>
+        <p><input type="checkbox" name="musique" value="1" <?php echo ($userPrefs['musique'] ?? 0) ? 'checked' : ''; ?>> 🎵 Musique autorisée</p>
+        <p><input type="checkbox" name="collations" value="1" <?php echo ($userPrefs['collations'] ?? 0) ? 'checked' : ''; ?>> 🍿 Collations autorisées</p>
+        
+        <input type="hidden" name="preferences_submit" value="1">
+        <button type="submit" class="btn">💾 Sauvegarder dans NoSQL</button>
+    </form> 
+    <div style="margin-top: 15px; padding: 10px; background: #e7f3ff; border-radius: 5px;">
+        <small>🔍 <strong>Fonctionnalité NoSQL:</strong> Ces préférences sont stockées dans une base de données documentaire.</small>
+    </div>
+</div>
                 
                 <div style="margin: 10px 0;">
                     <label for="vehicle_id">Sélectionner votre véhicule:</label>
@@ -223,18 +228,7 @@ require_once 'config/config.php';
                 <button type="submit">✅ Enregistrer le véhicule</button>
             </form>
         </div>
-        
-        <div class="preferences">
-            <p><input type="checkbox"> ✅ Accepte les fumeurs</p>
-            <p><input type="checkbox"> ✅ Accepte les animaux</p>
-            <p><input type="checkbox"> 🔇 Préfère le silence</p>
-            <p><input type="checkbox"> 💬 Aime discuter</p>
-            <p><input type="checkbox"> 🎵 Musique autorisée</p>
-            <p><input type="checkbox"> 🍿 Collations autorisées</p>
-            <button>💾 Enregistrer les préférences</button>
-        </div>
     </div>
-    
     <div class="user-section">
     <h2>📊 Mon Activité</h2>
     <?php
