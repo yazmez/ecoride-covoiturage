@@ -21,4 +21,6 @@ Comptes de test:
 - **Utilisateur:** JeanEco / password
 
 Déploiement:
-L'application est déployée sur:
+L'application est déployée sur: https://ecoride-covoiturage.fly.dev
+ - l'app ne functionne pas pour le moment http error 502 (erreur de site)
+ 
