@@ -1,2 +1,2 @@
 FROM php:8.0-apache
-COPY . /var/www/html/
+COPY ecoride/ /var/www/html/
