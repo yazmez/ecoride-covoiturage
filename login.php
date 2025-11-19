@@ -1,4 +1,36 @@
-<?php session_start(); ?>
+<?php session_start();
+unset($_SESSION['success_message']);
+unset($_SESSION['error_message']);
+require_once 'config/config.php';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset($_POST['password'])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $sql = "SELECT utilisateur_id, password FROM utilisateur WHERE pseudo = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows === 1) {
+        $user = $result->fetch_assoc();
+        if ($user && isset($user['password']) && password_verify($password, $user['password'])) {
+            $_SESSION['utilisateur_id'] = $user['utilisateur_id'];
+            $_SESSION['user'] = $username;
+            $_SESSION['success_message'] = "Connexion réussie!";
+            header("Location: user-space.php");
+            exit();
+        } else {
+            $_SESSION['error_message'] = "Mot de passe incorrect.";
+        }
+    } else {
+        $_SESSION['error_message'] = "Utilisateur non trouvé.";
+    }
+}
+
+if (isset($_SESSION['error_message']) && $_SESSION['error_message'] == "Utilisateur non trouvé.") {
+    unset($_SESSION['error_message']);
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -61,8 +93,7 @@
     </nav>
 
     <h1>Connexion à EcoRide</h1>
-    
-    <form class="login-form" action="config-login.php" method="POST">
+    <form class="login-form" action="login.php" method="POST" autocomplete="off">
         <h2>Se Connecter</h2>
         <label for="username">Nom d'utilisateur:</label><br>
         <input type="text" id="username" name="username"><br>
@@ -74,7 +105,12 @@
     </form>
 
     <div class="register-link">
+    <?php if (isset($_SESSION['user'])): ?>
+        <p>✅ Déjà connecté en tant que <strong><?php echo $_SESSION['user']; ?></strong></p>
+        <p><a href="logout.php" style="color: red;"> Se déconnecter</a></p>
+    <?php else: ?>
         <p>Pas de compte? <a href="register.php">Créer un compte</a></p>
-    </div>
+    <?php endif; ?>
+</div>
 </body>
 </html>

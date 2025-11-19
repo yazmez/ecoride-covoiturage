@@ -74,7 +74,7 @@
 
     <h1>Créer un compte EcoRide</h1>
     
-    <form class="register-form" action="config/config.php" method="POST">
+   <form class="register-form" action="config/register-user.php" method="POST">
         <h2>Inscription</h2>
         
         <label for="pseudo">Pseudo:</label><br>

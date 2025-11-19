@@ -104,6 +104,7 @@ CREATE TABLE covoiturage (
 CREATE TABLE participe (
     utilisateur_id INT,
     covoiturage_id INT,
+    est_conducteur BOOLEAN DEFAULT FALSE,
     PRIMARY KEY (utilisateur_id, covoiturage_id),
     FOREIGN KEY (utilisateur_id) REFERENCES utilisateur(utilisateur_id),
     FOREIGN KEY (covoiturage_id) REFERENCES covoiturage(covoiturage_id)
@@ -123,3 +124,24 @@ CREATE TABLE depose (
     FOREIGN KEY (utilisateur_id) REFERENCES utilisateur(utilisateur_id),
     FOREIGN KEY (avis_id) REFERENCES avis(avis_id)
 );
+CREATE TABLE utilise (
+    voiture_id INT,
+    covoiturage_id INT,
+    PRIMARY KEY (voiture_id, covoiturage_id),
+    FOREIGN KEY (voiture_id) REFERENCES voiture(voiture_id),
+    FOREIGN KEY (covoiturage_id) REFERENCES covoiturage(covoiturage_id)
+);
+CREATE TABLE employe (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    pseudo VARCHAR(50) UNIQUE NOT NULL,
+    mot_de_passe VARCHAR(255) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    date_creation DATETIME DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE admin (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    pseudo VARCHAR(50) UNIQUE NOT NULL,
+    mot_de_passe VARCHAR(255) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    date_creation DATETIME DEFAULT CURRENT_TIMESTAMP);
+ALTER TABLE utilisateur ADD COLUMN suspended BOOLEAN DEFAULT FALSE;
+ALTER TABLE employe ADD COLUMN suspended BOOLEAN DEFAULT FALSE;
