@@ -16,9 +16,9 @@ Installation:
 6. Visiter `http://localhost/ecoride/`
 
 Comptes de test:
-- **Admin:** admin@ecoride.fr / studi25
-- **Employé:** employe@ecoride.fr / I8mylife
-- **Utilisateur:** user@example.com / blablawhat?
+- **Admin:** admin / admin123
+- **Employé:** yaz98 / idk-dude25
+- **Utilisateur:** JeanEco / password
 
 Déploiement:
 L'application est déployée sur:
